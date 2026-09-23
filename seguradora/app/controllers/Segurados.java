@@ -40,8 +40,25 @@ public class Segurados extends Controller {
 			flash.error("Cadastro inválido, digite outro nome ou cpf para finalizar o processo");
 			form();
 		}
+		if (!segurado.nome.trim().matches("[A-Za-z ]+")) {
+			flash.error("Nome em formato inválido, digite apenas letras");
+			form();
+		}
+		String cpfSonumeros = segurado.cpf.replaceAll("[^0-9]", "");
+		if (!cpfSonumeros.trim().matches("[0-9]{11}")) {
+			flash.error("CPF em formato inválido, digite apenas números");
+			form();
+		}
+		String telefoneSonumeros = segurado.telefone.replaceAll("[^0-9]", "");
+		if (!telefoneSonumeros.trim().matches("[0-9]{11}")) {
+			flash.error("Telefone em formato inválido, digite apenas números formato brasileiro(ex: 84123456789).");
+			form();
+		}
+
 		segurado.nome = segurado.nome.toUpperCase();
 		segurado.email = segurado.email.toLowerCase();
+		segurado.cpf = cpfSonumeros.replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
+		segurado.telefone = telefoneSonumeros.replaceAll("(\\d{2})(\\d{9})", "($1)$2");
 		segurado.save();
 		flash.success("Segurado cadastrado com sucesso!");
 		listar(null);
