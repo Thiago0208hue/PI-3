@@ -39,6 +39,14 @@ public class Seguros extends Controller {
 	}
 
 	public static void salvar(Seguro seguro) {
+		if((seguro.placa==null||seguro.modelo==null||seguro.segurado==null)||(seguro.placa.trim().isEmpty()||seguro.modelo.trim().isEmpty())) {
+			flash.error("Cadastro inválido, selecione o segurado ou digite a placa ou o modelo corretamente!");
+			form();
+		}
+		 if (!seguro.placa.trim().matches("[A-Za-z]{3}[0-9][A-Za-z][0-9]{2}")) {
+		        flash.error("Placa em formato inválido. Use o padrão Mercosul (ex: ABC1D23).");
+		        form();
+		    }
 		seguro.placa = seguro.placa.toUpperCase();
 		seguro.modelo = seguro.modelo.toUpperCase();
 		seguro.save();

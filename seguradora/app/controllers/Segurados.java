@@ -23,7 +23,8 @@ public class Segurados extends Controller {
 		if (termo == null) {
 			segurados = Segurado.find("status != ?1", Status.INATIVO).fetch();
 		} else {
-			segurados = Segurado.find("status != ?1 and (lower(nome) like ?2 or lower(email) like ?2)", Status.INATIVO, "%"+termo.toLowerCase()+"%").fetch();
+			segurados = Segurado.find("status != ?1 and (lower(nome) like ?2 or lower(email) like ?2)", Status.INATIVO,
+					"%" + termo.toLowerCase() + "%").fetch();
 		}
 		render(segurados, termo);
 	}
@@ -34,6 +35,11 @@ public class Segurados extends Controller {
 	}
 
 	public static void salvar(Segurado segurado) {
+		if ((segurado.nome == null || segurado.cpf == null)
+				|| (segurado.nome.trim().isEmpty() || segurado.cpf.trim().isEmpty())) {
+			flash.error("Cadastro inválido, digite outro nome ou cpf para finalizar o processo");
+			form();
+		}
 		segurado.nome = segurado.nome.toUpperCase();
 		segurado.email = segurado.email.toLowerCase();
 		segurado.save();
