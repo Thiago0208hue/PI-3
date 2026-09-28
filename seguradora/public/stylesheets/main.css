@@ -66,11 +66,11 @@ h1, h2, h3, .navbar-brand {
 
 /* Tabelas */
 .table thead {
-	background-color: var(--primary);
+	--bs-table-bg: var(--primary);
+	--bs-table-color: #fff;
 }
 
 .table thead th {
-	color: #fff;
 	font-weight: 500;
 	border: none;
 }

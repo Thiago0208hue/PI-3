@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import models.Segurado;
@@ -19,12 +20,16 @@ public class Segurados extends Controller {
 	}
 
 	public static void listar(String termo) {
-		List<Segurado> segurados = null;
-		if (termo == null) {
-			segurados = Segurado.find("status != ?1", Status.INATIVO).fetch();
-		} else {
-			segurados = Segurado.find("status != ?1 and (lower(nome) like ?2 or lower(email) like ?2)", Status.INATIVO,
-					"%" + termo.toLowerCase() + "%").fetch();
+		List<Segurado> segurados = Segurado.find("status != ?1", Status.INATIVO).fetch();
+		if (termo != null && !termo.trim().isEmpty()) {
+			String cpfBusca = termo.replaceAll("[^0-9]", "");
+			List<Segurado> filtrados = new ArrayList<Segurado>();
+			for (Segurado s : segurados) {
+				if (s.cpf != null && s.cpf.replaceAll("[^0-9]", "").contains(cpfBusca)) {
+					filtrados.add(s);
+				}
+			}
+			segurados = filtrados;
 		}
 		render(segurados, termo);
 	}
