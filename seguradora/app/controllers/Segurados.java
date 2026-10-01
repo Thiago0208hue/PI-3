@@ -6,7 +6,9 @@ import java.util.List;
 import models.Segurado;
 import models.Status;
 import play.mvc.Controller;
+import play.mvc.With;
 
+@With (Autenticador.class)
 public class Segurados extends Controller {
 
 	public static void form() {

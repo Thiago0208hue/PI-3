@@ -8,6 +8,7 @@ public class Login extends Model {
 
     public String login;
     public String senha;
+    public String perfil;
 
     public String autenticar() {
 
@@ -23,4 +24,5 @@ public class Login extends Model {
 
         return null;
     }
+    
 }
